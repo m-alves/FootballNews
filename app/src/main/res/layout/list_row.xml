@@ -10,7 +10,7 @@
         android:id="@+id/story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         tools:text="Pity the put-upon fans who rank far below global brands and partners"/>
 
     <LinearLayout
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
+            android:gravity="end"
             tools:text="Football"/>
 
     </LinearLayout>

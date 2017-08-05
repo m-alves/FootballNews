@@ -47,6 +47,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
 
         customViewHolder.storyAuthor.setText(story.getAuthor());
+
+        customViewHolder.storySectionLabel.setText("In Section: ");
     }
 
     @Override
@@ -60,6 +62,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         protected TextView storySection;
         protected TextView storyDate;
         protected TextView storyAuthor;
+        protected TextView storySectionLabel;
 
 
         public CustomViewHolder(View view) {
@@ -68,6 +71,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             this.storySection = (TextView) view.findViewById(R.id.story_section);
             this.storyDate = (TextView) view.findViewById(R.id.story_date_published);
             this.storyAuthor = (TextView) view.findViewById(R.id.story_author);
+            this.storySectionLabel = (TextView) view.findViewById(R.id.story_section_label);
         }
     }
 
