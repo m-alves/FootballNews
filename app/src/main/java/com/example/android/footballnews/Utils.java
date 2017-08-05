@@ -39,6 +39,8 @@ public class Utils {
     /*Successful Response Code*/
     private static final int SUCCESSFUL_RESPONSE_CODE = 200;
 
+
+
     /**
      * Create a private constructor
      */
@@ -153,7 +155,7 @@ public class Utils {
 
             JSONObject baseJsonResponse = baseJson.getJSONObject("response");
 
-            JSONArray storyArray = baseJsonResponse.getJSONArray("resuts");
+            JSONArray storyArray = baseJsonResponse.getJSONArray("results");
             // For each book in the bookArray, create an Book object
             for (int i = 0; i < storyArray.length(); i++) {
                 // Get a single book at position i within the list of books
@@ -163,15 +165,23 @@ public class Utils {
                 // for that book.
 
                 String webTitle = currentStory.getString("webTitle");
+                Log.v("webTitle", webTitle);
+
                 String storyAuthor = "";
-                if (webTitle.contains("|")){
+                String separator = "|";
+                if (webTitle.contains(separator)){
                     // define webTitle
-                    // define author
+                    int separatorIndex = webTitle.indexOf(separator);
+                    Log.v("sepIndex", Integer.toString(separatorIndex));
 
+                    // define author
+                    storyAuthor = webTitle.substring(separatorIndex+2, webTitle.length()-1);
+                    Log.v("storyAuthor", storyAuthor);
+
+                    webTitle = webTitle.substring(0, separatorIndex);
+                    Log.v("webTitle", webTitle);
                 } else {
-
-                    // define author
-                    // hasAuthor = false;
+                    storyAuthor = "No author available";
                 }
 
                 String sectionName = currentStory.getString("sectionName");
@@ -180,8 +190,11 @@ public class Utils {
 
                 // Format date
                 String date = currentStory.getString("webPublicationDate");
-
-
+                if(!date.equals("")){
+                    date = date.substring(0,10);
+                } else {
+                    date = "No date available";
+                }
                 // Create a new {@link Book} object with the title, and author
                 //  from the JSON response.
                 Story story = new Story(webTitle, sectionName, storyAuthor, date, link  );

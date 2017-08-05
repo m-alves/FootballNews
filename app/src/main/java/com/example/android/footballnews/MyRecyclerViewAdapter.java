@@ -8,14 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Utilizador on 05/08/2017.
  */
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.CustomViewHolder> {
-    private ArrayList<Story> storyList;
+    private List<Story> storyList;
     private Context mContext;
+
+    private boolean mHasAuthor = true;
+
+    private boolean mHasDate = true;
 
     public MyRecyclerViewAdapter(Context context, ArrayList<Story> storyList) {
         this.storyList = storyList;
@@ -64,5 +69,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             this.storyDate = (TextView) view.findViewById(R.id.story_date_published);
             this.storyAuthor = (TextView) view.findViewById(R.id.story_author);
         }
+    }
+
+    public void setStoriesList(List<Story> stories){
+        storyList = stories;
+        this.notifyDataSetChanged();
     }
 }
