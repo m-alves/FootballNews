@@ -15,9 +15,7 @@ public class StoryLoader extends AsyncTaskLoader<List<Story>> {
     private String mUrl;
 
     /**
-     * Constructs a new BookLoader.
-     * @param context of the activity
-     * @param url to load data from
+     * Constructs a new StoryLoader.
      */
     public StoryLoader(Context context, String url) {
         super(context);
@@ -34,7 +32,7 @@ public class StoryLoader extends AsyncTaskLoader<List<Story>> {
         if (mUrl == null) {
             return null;
         }
-        // Perform the network request, parse the response, and extract a list of books.
+        // Perform the network request, parse the response, and extract a list of stories.
         return Utils.fetchStoryData(mUrl);
     }
 }

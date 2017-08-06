@@ -47,7 +47,7 @@ public class Utils {
     private Utils(){}
 
     /**
-     * Query the GoogleBooks dataset and return a list of Book objects.
+     * Query the Guardian dataset and return a list of Story objects.
      */
     public static List<Story> fetchStoryData(String requestUrl) {
         // Create URL object
@@ -60,9 +60,9 @@ public class Utils {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
-        // Extract relevant fields from the JSON response and create a list of Books
+        // Extract relevant fields from the JSON response and create a list of Stories
         List<Story> stories = extractFeatureFromJson(jsonResponse);
-        // Return the list of Books
+        // Return the list of stories
         return stories;
     }
 
@@ -136,7 +136,7 @@ public class Utils {
     }
 
     /**
-     * Return a list of Book objects that has been built up from
+     * Return a list of Story objects that has been built up from
      * parsing the given JSON response.
      */
     private static List<Story> extractFeatureFromJson(String storyJSON) {
@@ -144,69 +144,56 @@ public class Utils {
         if (TextUtils.isEmpty(storyJSON)) {
             return null;
         }
-        // Create an empty ArrayList that we can start adding books to
+        // Create an empty ArrayList that we can start adding stories to
         List<Story> stories = new ArrayList<>();
         // Try to parse the JSON response string.
         try {
             // Create a JSONObject from the JSON response string
             JSONObject baseJson = new JSONObject(storyJSON);
-            // Extract the JSONArray associated with the key called "items",
-            // which represents a list of items (or books).
 
+            // Extract the response JSON object
             JSONObject baseJsonResponse = baseJson.getJSONObject("response");
 
+            //Extract the results JSON array, where each result is a story.
+
             JSONArray storyArray = baseJsonResponse.getJSONArray("results");
-            // For each book in the bookArray, create an Book object
+
+            // For each story in the storyArray, create an Story object
             for (int i = 0; i < storyArray.length(); i++) {
-                // Get a single book at position i within the list of books
+                // Get a single story at position i within the list of stories
                 JSONObject currentStory = storyArray.getJSONObject(i);
-                // For a given book, extract the JSONObject associated with the
-                // key called "volumeInfo", which represents a list of all properties
-                // for that book.
 
+                // Extract the components of interest
                 String webTitle = currentStory.getString("webTitle");
-                Log.v("webTitle", webTitle);
-
                 String storyAuthor = "";
                 String separator = "|";
                 if (webTitle.contains(separator)){
                     // define webTitle
                     int separatorIndex = webTitle.indexOf(separator);
-                    Log.v("sepIndex", Integer.toString(separatorIndex));
-
                     // define author
                     storyAuthor = webTitle.substring(separatorIndex+2, webTitle.length()-1);
-                    Log.v("storyAuthor", storyAuthor);
-
                     webTitle = webTitle.substring(0, separatorIndex);
-                    Log.v("webTitle", webTitle);
                 } else {
                     storyAuthor = "No author available";
                 }
-
                 String sectionName = currentStory.getString("sectionName");
-
                 String link = currentStory.getString("webUrl");
-
-                // Format date
                 String date = currentStory.getString("webPublicationDate");
                 if(!date.equals("")){
                     date = date.substring(0,10);
                 } else {
                     date = "No date available";
                 }
-                // Create a new {@link Book} object with the title, and author
-                //  from the JSON response.
+                // Create a new Story object with the components extracted above
                 Story story = new Story(webTitle, sectionName, storyAuthor, date, link  );
-                // Add the new {@link Book} to the list of books.
+                // Add the new story to the stories array.
                 stories.add(story);
-
             }
         } catch (JSONException e) {
 
             Log.e("Utils", "Problem parsing the Story JSON results", e);
         }
-        // Return the list of Books
+        // Return the list of stories
         return stories;
     }
 }

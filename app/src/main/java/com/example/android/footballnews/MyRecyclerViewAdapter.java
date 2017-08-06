@@ -19,10 +19,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private Context mContext;
     private OnItemClickListener onItemClickListener;
 
-    private boolean mHasAuthor = true;
-
-    private boolean mHasDate = true;
-
     public MyRecyclerViewAdapter(Context context, ArrayList<Story> storyList) {
         this.storyList = storyList;
         this.mContext = context;
@@ -39,17 +35,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
         final Story story = storyList.get(i);
 
-        //Setting text view title
+        //Setting the views
         customViewHolder.storyTitle.setText(story.getTitle());
         customViewHolder.storySection.setText(story.getSection());
-
-
         customViewHolder.storyDate.setText(story.getDate());
-
-
         customViewHolder.storyAuthor.setText(story.getAuthor());
-
-        customViewHolder.storySectionLabel.setText("In Section: ");
+        customViewHolder.storySectionLabel.setText(R.string.section_label);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

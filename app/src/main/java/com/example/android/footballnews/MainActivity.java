@@ -2,9 +2,11 @@ package com.example.android.footballnews;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,21 +21,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Story>>{
 
-    private static final String LOG_TAG = MainActivity.class.getName();
-
     private static final String GUARDIAN_REQUEST_URL =
             "https://content.guardianapis.com/football?api-key=test";
 
     private static final int STORY_LOADER_ID = 1;
 
-    /** Adapter for the list of books */
+    /** Adapter for the list of news */
     private MyRecyclerViewAdapter mAdapter;
 
     private RecyclerView mRecyclerView;
 
     private ProgressBar mProgressBar;
-
-    private List<Story> mListOfStories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +42,10 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressBar = (ProgressBar) findViewById(R.id.loading_indicator);
 
-        // Create a new adapter that takes an empty list of books as input
+        // Create a new adapter that takes an empty list of stories as input
         mAdapter = new MyRecyclerViewAdapter(this, new ArrayList<Story>());
 
-        // Make the ListView use the BookAdapter created above, so that the
-        // ListView will display list items for each Book in the list.
+        // Make the RecyclerView use the Adapter created above
         mRecyclerView.setAdapter(mAdapter);
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
@@ -63,19 +60,15 @@ public class MainActivity extends AppCompatActivity
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(STORY_LOADER_ID, null, this);
-
-            // Otherwise, display error
-            View loadingIndicator = findViewById(R.id.loading_indicator);
-            //Hide loading indicator
-            loadingIndicator.setVisibility(View.GONE);
+        } else {
+            // Otherwise, display error and hide loading indicator
+            mProgressBar.setVisibility(View.GONE);
+            Toast.makeText(this, getText(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
     public Loader<List<Story>> onCreateLoader(int i, Bundle bundle) {
-
-
         return new StoryLoader(this, GUARDIAN_REQUEST_URL);
     }
 
@@ -85,22 +78,23 @@ public class MainActivity extends AppCompatActivity
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
-
         if (stories != null && !stories.isEmpty()) {
             mAdapter.setStoriesList(stories);
         }
 
+        // Open the story in the browser
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Story story) {
-                Toast.makeText(MainActivity.this, "success", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(story.getLink()));
+                startActivity(intent);
             }
         });
     }
 
     @Override
     public void onLoaderReset(Loader<List<Story>> loader) {
-
+        mAdapter.notifyDataSetChanged();
     }
-
 }
