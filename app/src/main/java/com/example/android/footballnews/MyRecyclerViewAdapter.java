@@ -17,6 +17,7 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.CustomViewHolder> {
     private List<Story> storyList;
     private Context mContext;
+    private OnItemClickListener onItemClickListener;
 
     private boolean mHasAuthor = true;
 
@@ -36,7 +37,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     @Override
     public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
-        Story story = storyList.get(i);
+        final Story story = storyList.get(i);
 
         //Setting text view title
         customViewHolder.storyTitle.setText(story.getTitle());
@@ -49,6 +50,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         customViewHolder.storyAuthor.setText(story.getAuthor());
 
         customViewHolder.storySectionLabel.setText("In Section: ");
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(story);
+            }
+        };
+        customViewHolder.storyTitle.setOnClickListener(listener);
+        customViewHolder.storySection.setOnClickListener(listener);
+        customViewHolder.storyDate.setOnClickListener(listener);
+        customViewHolder.storyAuthor.setOnClickListener(listener);
+        customViewHolder.storySectionLabel.setOnClickListener(listener);
     }
 
     @Override
@@ -78,5 +91,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void setStoriesList(List<Story> stories){
         storyList = stories;
         this.notifyDataSetChanged();
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

@@ -14,22 +14,24 @@
         tools:text="Pity the put-upon fans who rank far below global brands and partners"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/story_section_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginTop="8dp"
-            tools:text="In Section: "/>
+            tools:text="In Section:"/>
 
         <TextView
             android:id="@+id/story_section"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_weight="3"
             tools:text="Football"/>
 
     </LinearLayout>

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,13 @@ public class MainActivity extends AppCompatActivity
         if (stories != null && !stories.isEmpty()) {
             mAdapter.setStoriesList(stories);
         }
+
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(Story story) {
+                Toast.makeText(MainActivity.this, "success", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
